@@ -38,5 +38,6 @@ public class AlgorithmTest {
             }
 
         }
+        return expected;
     }
 }
