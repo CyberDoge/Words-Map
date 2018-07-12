@@ -1,40 +1,10 @@
 package org.cd.project.words_map.service;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.util.*;
+
 
 public class MapBuilderImpl implements MapBuilder {
 
-    @Test
-    void test() {
-//        String s = "сапог сарай арбуз болт бокс биржа аБбаа абаа      авава аАааа ааааа ааба";
-//        String s = "ААА АААА ааа аааа абва аба";
-        String s = "ААА АААА ааа аааа абва аба";
-        var res = sortLine(s);
-        var keySet = res.entrySet();
-
-        for (var mySet : keySet) {
-            if(mySet.getValue().size() < 2) continue;
-            System.out.print(mySet.getKey() + " = {\n");
-            for (String str : mySet.getValue()) {
-                System.out.print(str + ", ");
-            }
-            System.out.println("\n}");
-        }
-        Map<Character, Set<String>> expected = new TreeMap<>();
-        Set<String> m = new TreeSet<>((o1, o2) -> 1);
-        m.add("АААА");
-        m.add("аааа");
-        m.add("ААА");
-        m.add("ааа");
-//        m.add("аба");
-        m.add("абва");
-        System.out.println(m.toString());
-        expected.put('а', m);
-        Assertions.assertEquals(expected, res);
-    }
 
     @Override
     public Map<Character, Set<String>> sortLine(String line) {
@@ -53,36 +23,18 @@ public class MapBuilderImpl implements MapBuilder {
     }
 
     private Set<String> createTreeSet() {
-        Comparator<String> comp = (String o1, String o2) -> {
-            int len1 = o1.toLowerCase().getBytes().length >> 1;
-            int len2 = o2.toLowerCase().getBytes().length >> 1;
-            int lim = Math.min(len1, len2);
-            for (int k = 0; k < lim; k++) {
-                //
-                char c1 = (char) (o1.getBytes()[k]& 0xFF);
-                char c2 = (char) (o2.getBytes()[k]& 0xFF);
-                if (c1 != c2) {
-                    return c1 - c2;
-                }
+        Comparator<String> comp = (String str1, String str2) -> {
+            var str1Length = str1.length();
+            var str2Length = str2.length();
+            var limit = Math.min(str1Length, str2Length);
+            for (int i = 0; i < limit; i++) {
+                Character c1 = Character.toLowerCase(str1.charAt(i));
+                Character c2 = Character.toLowerCase(str2.charAt(i));
+                if (!c1.equals(c2)) return c1 - c2;
             }
-            return len2 - len1;
+
+            return str2Length - str1Length;
         };
-        Comparator<String> comparator = Comparator.comparing(String::toString);
-        comparator.thenComparingInt(String::length).reversed();
         return new TreeSet<>(comp);
     }
 }
-
-/*
-  int len1 = length(value);
-        int len2 = length(other);
-        int lim = Math.min(len1, len2);
-        for (int k = 0; k < lim; k++) {
-            char c1 = getChar(value, k);
-            char c2 = getChar(other, k);
-            if (c1 != c2) {
-                return c1 - c2;
-            }
-        }
-        return len1 - len2;
- */
