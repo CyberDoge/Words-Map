@@ -27,9 +27,8 @@ public class MainController {
     }
 
     @RequestMapping(name = "/", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<Map<Character, Set<String>>> result(@RequestParam String res) {
+    public @ResponseBody Map<Character, Set<String>> result(@RequestParam String res) {
         var result = mapBuilder.sortLine(res);
-        return ResponseEntity.ok(result);
+        return result;
     }
 }

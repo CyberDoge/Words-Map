@@ -6,25 +6,23 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script>
         $(function () {
-            console.log("new")
             $("#submit").click(function (e) {
-                e.preventDefault() 
-                $.ajax({
-                    type: "POST",
-                    url: "/",
-                    data: {
-                        res: $("#words-array")
+                e.preventDefault()
+                $.post("/",
+                    {
+                        res: $("#words-array").val()
                     },
-                    success: function (res) {
-                        console.log(res);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus, errorThrown);
-                    },
-                    done: function () {
-                        console.log("clicked")
-                    }
-                });
+                    function (data, status) {
+
+                        console.log("Data: " + data + "\nStatus: " + status);
+                        var str = ''
+                        for (var key in data) {
+                            if (data[key].length > 1)
+                                str += '[' + key + '=[' + data[key] + '], ';
+                        }
+                        str = str.substring(0, str.length - 2) + ']'
+                        $("#res").append(str)
+                    });
             })
         })
     </script>
@@ -37,5 +35,6 @@
 <textarea id="words-array" name="words-array" path="content"></textarea>
 <br/>
 <button id="submit">press me</button>
+<p id="res"></p>
 </body>
 </html>
