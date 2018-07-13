@@ -1,10 +1,11 @@
 package org.cd.project.words_map.service;
 
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 
-
+@Component("mapBuilder")
 public class MapBuilderImpl implements MapBuilder {
-
 
     @Override
     public Map<Character, Set<String>> sortLine(String line) {
@@ -23,18 +24,7 @@ public class MapBuilderImpl implements MapBuilder {
     }
 
     private Set<String> createTreeSet() {
-        Comparator<String> comp = (String str1, String str2) -> {
-            var str1Length = str1.length();
-            var str2Length = str2.length();
-            var limit = Math.min(str1Length, str2Length);
-            for (int i = 0; i < limit; i++) {
-                Character c1 = Character.toLowerCase(str1.charAt(i));
-                Character c2 = Character.toLowerCase(str2.charAt(i));
-                if (!c1.equals(c2)) return c1 - c2;
-            }
-
-            return str2Length - str1Length;
-        };
-        return new TreeSet<>(comp);
+        Comparator<String> comparator = Comparator.comparingInt(String::length).reversed().thenComparing(String::compareTo);
+        return new TreeSet<>(comparator);
     }
 }

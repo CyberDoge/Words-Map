@@ -9,19 +9,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AlgorithmTest {
+
+
     @Test
-    void test() {
+    public void simpleTest() {
+        var expected = createTestMap(new Character[]{'а'}, "ААААА", "ААААа", "абвга", "аава", "аяя", "аа", "ах");
+        String s = "аа   абвга ААААА аяя аава ах  ААААа";
+        test(expected, s);
+    }
+
+    private void test(Map<Character, Set<String>> expected, String s) {
         var mapBuilder = new MapBuilderImpl();
-        String s = "ААА АААА ааа аааа абва аба";
         var res = mapBuilder.sortLine(s);
-        System.out.println(res.toString());
-        var expected = createTestMap(new Character[]{'а'}, "АААА", "ААА", "аба", "абва");
-        System.out.println(expected.toString());
+        System.out.println("res =\t   " + res);
+        System.out.println("expected = " + expected);
         for (var key : expected.keySet()) {
             assertTrue(res.containsKey(key));
             Iterator iterator = res.get(key).iterator();
             for (String str : expected.get(key)) {
-                assertEquals(str, iterator.next());
+                var next = iterator.next();
+                assertEquals(str, next);
             }
         }
     }
@@ -33,7 +40,7 @@ public class AlgorithmTest {
             Set<String> someSet = new TreeSet<>((o1, o2) -> 1);
             expected.put(c, someSet);
             for (; last < str.length; last++) {
-                if (!(c.equals(str[last].charAt(0)))) break;
+                if (Character.toLowerCase(c)!=Character.toLowerCase(    str[last].charAt(0))) break;
                 someSet.add(str[last]);
             }
 

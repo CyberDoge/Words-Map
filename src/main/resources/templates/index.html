@@ -1,15 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script>
+        $(function () {
+            console.log("new")
+            $("#submit").click(function (e) {
+                e.preventDefault() 
+                $.ajax({
+                    type: "POST",
+                    url: "/",
+                    data: {
+                        res: $("#words-array")
+                    },
+                    success: function (res) {
+                        console.log(res);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                    },
+                    done: function () {
+                        console.log("clicked")
+                    }
+                });
+            })
+        })
+    </script>
 </head>
 <body>
 <h3>please enter array of words</h3>
 <br/>
 <label for="words-array">your array</label>
-<textarea id="words-array">
-
-</textarea>
+<br/>
+<textarea id="words-array" name="words-array" path="content"></textarea>
+<br/>
+<button id="submit">press me</button>
 </body>
 </html>

@@ -1,14 +1,25 @@
 package org.cd.project.words_map.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.cd.project.words_map.service.MapBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.HttpRequestHandler;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class MainController {
+
+    private MapBuilder mapBuilder;
+
+    @Autowired
+    public void setMapBuilder(MapBuilder mapBuilder) {
+        this.mapBuilder = mapBuilder;
+    }
 
     @RequestMapping(name = "/", method = RequestMethod.GET)
     public String mainPage() {
@@ -16,9 +27,9 @@ public class MainController {
     }
 
     @RequestMapping(name = "/", method = RequestMethod.POST)
-    public void result(@RequestBody MultiValueMap<String, String> formData) {
-        String str = formData.getFirst("words-array");
-
-
+    @ResponseBody
+    public ResponseEntity<Map<Character, Set<String>>> result(@RequestParam String res) {
+        var result = mapBuilder.sortLine(res);
+        return ResponseEntity.ok(result);
     }
 }
