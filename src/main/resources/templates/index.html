@@ -1,8 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
+    <style>
+        body{
+            text-align: center;
+            background: #f4f4f4;
+        }
+
+    </style>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script>
         $(function () {
@@ -13,16 +20,18 @@
                         res: $("#words-array").val()
                     },
                     function (data, status) {
-
-                        console.log("Data: " + data + "\nStatus: " + status);
+                        $("#words-array").val('')
                         var str = ''
                         for (var key in data) {
                             if (data[key].length > 1)
                                 str += '[' + key + '=[' + data[key] + '], ';
                         }
-                        str = str.substring(0, str.length - 2) + ']'
-                        $("#res").append(str)
-                    });
+                        if (str !== "") {
+                            str = str.substring(0, str.length - 2) + ']'
+                            $("#res").text("")
+                            $("#res").append(str)
+                        }
+                    })
             })
         })
     </script>
@@ -34,7 +43,7 @@
 <br/>
 <textarea id="words-array" name="words-array" path="content"></textarea>
 <br/>
-<button id="submit">press me</button>
+<button id="submit">get result</button>
 <p id="res"></p>
 </body>
 </html>
